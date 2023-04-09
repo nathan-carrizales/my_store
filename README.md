@@ -6,7 +6,7 @@ This repository aims at the folowing:
 2) gaining analytic insight into the data using SQL queries.
 3) writing a report in Tableau that visualizes some KPI's. 
 
-Additionally, Python is used to aid data cleaning and insert data into the database.
+Additionally, Python is used to aid data cleaning and insert data into the database. To run it, first execute `database_and_table_schema.sql` to create the tables, then execute `data_prep_and_insert.py` to insert the data to the database.
 
 
 # The Data:
