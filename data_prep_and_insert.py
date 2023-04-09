@@ -199,52 +199,54 @@ def push_product_data(my_sql_client: connection.MySQLConnection, product_data: p
     print(my_cursor.rowcount, 'record(s) inserted.')
 
 
-sql_password = os.environ.get('SQL_PASSWORD')
-sql_database = os.environ.get('SQL_DATABASE')
-sql_host = 'localhost'
-sql_port = 'root'
-csv_data_path = os.getcwd() + '/global_superstore.csv'
-user = 'root'
-database_name = 'mystore'
+if __name__ == '__main__':
 
-# create the mysql connection
-mydb = connection.MySQLConnection(
-    host=sql_host,
-    user=user,
-    port=sql_port,
-    password=sql_password,
-    database=database_name,
-)
+    sql_password = os.environ.get('SQL_PASSWORD')
+    sql_database = os.environ.get('SQL_DATABASE')
+    sql_host = 'localhost'
+    sql_port = 'root'
+    csv_data_path = os.getcwd() + '/global_superstore.csv'
+    user = 'root'
+    database_name = 'mystore'
 
-# get the raw data
-raw_data = pd.read_csv(
-    filepath_or_buffer=csv_data_path,
-    encoding='unicode_escape'
-)
+    # create the mysql connection
+    mydb = connection.MySQLConnection(
+        host=sql_host,
+        user=user,
+        port=sql_port,
+        password=sql_password,
+        database=database_name,
+    )
 
-# create customer table
-customer_data_processed = extract_customer_data(
-    data=raw_data
-)
-push_customer_data(
-    my_sql_client=mydb,
-    customer_data=customer_data_processed
-)
+    # get the raw data
+    raw_data = pd.read_csv(
+        filepath_or_buffer=csv_data_path,
+        encoding='unicode_escape'
+    )
 
-# create product table
-product_data_processed = extract_product_data(
-    data=raw_data
-)
-push_product_data(
-    my_sql_client=mydb,
-    product_data=product_data_processed
-)
+    # create customer table
+    customer_data_processed = extract_customer_data(
+        data=raw_data
+    )
+    push_customer_data(
+        my_sql_client=mydb,
+        customer_data=customer_data_processed
+    )
 
-# create sale data
-sale_data_processed = extract_sale_data(
-    data=raw_data
-)
-push_sale_data(
-    my_sql_client=mydb,
-    sale_data=sale_data_processed
-)
+    # create product table
+    product_data_processed = extract_product_data(
+        data=raw_data
+    )
+    push_product_data(
+        my_sql_client=mydb,
+        product_data=product_data_processed
+    )
+
+    # create sale data
+    sale_data_processed = extract_sale_data(
+        data=raw_data
+    )
+    push_sale_data(
+        my_sql_client=mydb,
+        sale_data=sale_data_processed
+    )
