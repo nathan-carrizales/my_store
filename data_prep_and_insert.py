@@ -4,16 +4,11 @@ SQL database is expected to have 3 tables: 'customer', 'product', and 'sale'. Th
 in the file 'database_and_table_schema.sql'.
 """
 import pandas as pd
-import mysql.connector
 import os
-from mysql.connector import (connection)
+from mysql.connector import connection
 
 
-SQL_PASSWORD = os.environ.get("SQL_PASSWORD")
-SQL_DATABASE = os.environ.get("SQL_DATABASE")
-
-
-def extract_customer_data(data: pd.DataFrame):
+def extract_customer_data(data: pd.DataFrame) -> pd.DataFrame:
     """
 
     :param data: Pandas Dataframe that holds the entire data
@@ -29,7 +24,7 @@ def extract_customer_data(data: pd.DataFrame):
     return customers[['first_name', 'last_name', 'customer_id']]
 
 
-def extract_product_data(data: pd.DataFrame):
+def extract_product_data(data: pd.DataFrame) -> pd.DataFrame:
     """
 
     :param data: Pandas Dataframe that holds the entire data
@@ -51,7 +46,7 @@ def extract_product_data(data: pd.DataFrame):
     return products
 
 
-def extract_sale_data(data: pd.DataFrame):
+def extract_sale_data(data: pd.DataFrame) -> pd.DataFrame:
     """
 
     :param data: Pandas Dataframe that holds the entire data
@@ -132,7 +127,7 @@ def push_customer_data(my_sql_client: connection.MySQLConnection, customer_data:
 
     mydb.commit()
 
-    print(my_cursor.rowcount, "record inserted.")
+    print(my_cursor.rowcount, 'record(s) inserted.')
 
 
 def push_sale_data(my_sql_client: connection.MySQLConnection, sale_data: pd.DataFrame):
@@ -176,7 +171,7 @@ def push_sale_data(my_sql_client: connection.MySQLConnection, sale_data: pd.Data
 
     mydb.commit()
 
-    print(my_cursor.rowcount, "record inserted.")
+    print(my_cursor.rowcount, 'record(s) inserted.')
 
 
 def push_product_data(my_sql_client: connection.MySQLConnection, product_data: pd.DataFrame):
@@ -201,26 +196,55 @@ def push_product_data(my_sql_client: connection.MySQLConnection, product_data: p
 
     mydb.commit()
 
-    print(my_cursor.rowcount, "record(s) inserted.")
+    print(my_cursor.rowcount, 'record(s) inserted.')
 
 
+sql_password = os.environ.get('SQL_PASSWORD')
+sql_database = os.environ.get('SQL_DATABASE')
+sql_host = 'localhost'
+sql_port = 'root'
+csv_data_path = os.getcwd() + '/global_superstore.csv'
+user = 'root'
+database_name = 'mystore'
+
+# create the mysql connection
 mydb = connection.MySQLConnection(
-    host="localhost",
-    user="root",
-    port='3306',
-    password=SQL_PASSWORD,
-    database='mystore',
+    host=sql_host,
+    user=user,
+    port=sql_port,
+    password=sql_password,
+    database=database_name,
 )
 
-raw_data = pd.read_csv("/Users/nathan/Desktop/personal/my_store/Global_Superstore2.csv", encoding='unicode_escape')
+# get the raw data
+raw_data = pd.read_csv(
+    filepath_or_buffer=csv_data_path,
+    encoding='unicode_escape'
+)
 
-customer_data_processed = extract_customer_data(data=raw_data)
-push_customer_data(my_sql_client=mydb, customer_data=customer_data_processed)
+# create customer table
+customer_data_processed = extract_customer_data(
+    data=raw_data
+)
+push_customer_data(
+    my_sql_client=mydb,
+    customer_data=customer_data_processed
+)
 
-product_data_processed = extract_product_data(data=raw_data)
-push_product_data(my_sql_client=mydb, product_data=product_data_processed)
+# create product table
+product_data_processed = extract_product_data(
+    data=raw_data
+)
+push_product_data(
+    my_sql_client=mydb,
+    product_data=product_data_processed
+)
 
-
-sale_data_processed = extract_sale_data(data= raw_data)
-push_sale_data(my_sql_client=mydb, sale_data=sale_data_processed)
-print()
+# create sale data
+sale_data_processed = extract_sale_data(
+    data=raw_data
+)
+push_sale_data(
+    my_sql_client=mydb,
+    sale_data=sale_data_processed
+)

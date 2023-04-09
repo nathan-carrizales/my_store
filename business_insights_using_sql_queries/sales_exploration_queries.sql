@@ -14,7 +14,7 @@ SELECT order_priority, ROUND(100*(COUNT(ship_mode)/ (SELECT COUNT(*) FROM sale))
     ORDER BY orders DESC 
     LIMIT 5;
 
--- Top 5 countries with most most sales by volume
+-- Top 5 countries with most sales
 SELECT country, ROUND(100*COUNT(country)/(SELECT COUNT(*) FROM sale)) AS percent, COUNT(country) as total_sales 
 	FROM sale
     GROUP BY country
