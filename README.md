@@ -4,7 +4,7 @@ My Store
 This repository aims at the folowing:
 1) building a database in MySQL using a CSV of publicly available sale data found at Kaggle.
 2) gaining analytic insight into the data using SQL queries.
-3) writing a report in Tableau that visualizes KPI's. 
+3) writing a report in Tableau that visualizes some KPI's. 
 
 Additionally, Python is used to aid data cleaning and insert data into the database.
 
