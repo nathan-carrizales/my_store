@@ -32,4 +32,4 @@ SELECT city, MAX(country) as country, ROUND(100*COUNT(*)/(SELECT COUNT(*) FROM S
 ```
 
 # Tableau:
-Placeholder
+To visualize the data, a [dashboard](https://public.tableau.com/app/profile/nathan5059/viz/mystore_16812338248640/Dashboard1?publish=yes) was created using Tableau.
